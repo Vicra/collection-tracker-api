@@ -1,2 +1,2 @@
 exports.thingsRouter = require("./things");
-exports.collectionRouter = require("./collection");
+exports.collectiveRouter = require("./collective");

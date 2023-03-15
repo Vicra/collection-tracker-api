@@ -1,1 +1,1 @@
-exports.collectionDTO = require("./collectionDTO.json");
+exports.collectiveDTO = require("./collectiveDTO.json");

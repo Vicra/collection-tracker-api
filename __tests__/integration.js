@@ -4,69 +4,82 @@
 const request = require("supertest");
 const mongoose = require("mongoose");
 const app = require("../app/app");
-const { Thing } = require("../app/models");
+const { Collective } = require("../app/models");
 
-const exampleThing = {
-  name: "Example",
-  number: 5,
-  stuff: ["cats", "dogs"],
-  url: "https://google.com",
+const collectiveMock = {
+  name: "ancientEgyptPlate",
+  value: 1000,
+  year: "3000 BC",
+  condition: "used",
+  location: "Egypt",
+  group: "relic",
 };
 
 beforeEach(async () => {
-  const testThing = new Thing(exampleThing);
-  await testThing.save();
+  const collectiveObj = new Collective(collectiveMock);
+  const a = await collectiveObj.save();
 });
 
 afterEach(async () => {
-  await mongoose.connection.dropCollection("things");
+  await mongoose.connection.dropCollection("collectives");
 });
 
 afterAll(async () => {
   await mongoose.disconnect();
 });
 
-describe("GET /things", () => {
-  test("Get a list of things", async () => {
-    let response = await request(app).get("/things");
-    expect(response.body).toEqual([exampleThing]);
+describe("GET /collectives", () => {
+  test("Get a list of collectives", async () => {
+    let response = await request(app).get("/collectives");
+    expect(response.body).toEqual([collectiveMock]);
   });
 });
 
-describe("POST /things", () => {
-  test("Create a mini new Thing", async () => {
-    let response = await request(app).post("/things").send({ name: "A Thing" });
-    expect(response.body).toEqual({ name: "A Thing", stuff: [] });
+describe("POST /collectives", () => {
+  test("Create a new item", async () => {
+    let response = await request(app)
+      .post("/collectives")
+      .send({ name: "ball", group: "default", value: 10 });
+    expect(response.body).toEqual({
+      name: "ball",
+      group: "default",
+      value: 10,
+    });
   });
-  test("Create a full new Thing", async () => {
-    const fullThing = {
-      name: "Other Thing",
-      stuff: ["cats", "dogs"],
-      number: 5,
-      url: "http://google.com",
+  test("Create a full new item", async () => {
+    const fullItem = {
+      name: "full ball",
+      value: 1000,
+      year: "2023",
+      condition: "new",
+      location: "USA",
+      group: "fun",
     };
-    let response = await request(app).post("/things").send(fullThing);
-    expect(response.body).toEqual(fullThing);
+    let response = await request(app).post("/collectives").send(fullItem);
+    expect(response.body).toEqual(fullItem);
 
     let duplicateResponse = await request(app)
-      .post("/things")
-      .send({ name: "Other Thing" });
-    expect(duplicateResponse.status).toEqual(409);
+      .post("/collectives")
+      .send({ name: "full ball" });
+    expect(duplicateResponse.status).toEqual(400);
   });
 });
 
-describe("PATCH /things/:name", () => {
-  test("Update a thing's name", async () => {
+describe("PATCH /collectives/:name", () => {
+  test("Update a collectives's name", async () => {
     let response = await request(app)
-      .patch("/things/Example")
-      .send({ name: "New Name" });
-    expect(response.body).toEqual({ ...exampleThing, name: "New Name" });
+      .patch("/collectives/ancientEgyptPlate")
+      .send({ name: "ancientPlate", group: "relic", value: 1000 });
+    expect(response.body).toEqual({
+      ...collectiveMock,
+      name: "ancientPlate",
+    });
   });
 });
 
 describe("DELETE /things/:name", () => {
-  test("Delete a thing name", async () => {
-    let response = await request(app).delete("/things/Example");
-    expect(response.body).toEqual(exampleThing);
+  test("Delete a collective name", async () => {
+    let response = await request(app).delete("/collectives/ancientEgyptPlate");
+    expect(response.body).toEqual(collectiveMock);
   });
 });

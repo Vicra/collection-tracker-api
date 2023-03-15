@@ -1,7 +1,7 @@
-const { Collection } = require("../models");
+const { Collective } = require("../models");
 const { APIError, parseSkipLimit } = require("../helpers");
 
-async function getCollections(request, response, next) {
+async function getCollectives(request, response, next) {
   let skip = parseSkipLimit(request.query.skip) || 0;
   let limit = parseSkipLimit(request.query.limit, 1000) || 1000;
   if (skip instanceof APIError) {
@@ -11,13 +11,13 @@ async function getCollections(request, response, next) {
   }
 
   try {
-    const collections = await Collection.getCollections({}, {}, skip, limit);
-    return response.json(collections);
+    const collectives = await Collective.getCollectives({}, {}, skip, limit);
+    return response.json(collectives);
   } catch (err) {
     return next(err);
   }
 }
 
 module.exports = {
-  getCollections,
+  getCollectives,
 };
