@@ -79,9 +79,22 @@ async function deleteCollection(request, response, next) {
   }
 }
 
+/**
+ * Get the list of groups
+ */
+async function getGroups(_, response, next) {
+  try {
+    const groups = await Collection.getGroups();
+    return response.json(groups);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 module.exports = {
   createCollection,
   getCollection,
   updateCollection,
   deleteCollection,
+  getGroups,
 };

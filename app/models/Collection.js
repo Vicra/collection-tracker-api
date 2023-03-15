@@ -94,7 +94,10 @@ collectionSchema.statics = {
    * @returns {Promise<Collections, APIError>}
    */
   async getGroups() {
-    const collections = await this.aggregate().sortByCount("group").exec();
+    const collections = await this.aggregate()
+      .sortByCount("group")
+      .sort({ group: 1 })
+      .exec();
 
     if (!collections.length) {
       return [];
