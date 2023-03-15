@@ -35,6 +35,7 @@ async function connectToDatabase() {
  */
 function globalResponseHeaders(request, response, next) {
   response.header("Access-Control-Allow-Origin", "*");
+  response.header("Cache-Control", "no-cache, no-store");
   response.header(
     "Access-Control-Allow-Headers",
     "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization"

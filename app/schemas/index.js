@@ -1,2 +1,2 @@
-exports.thingNewSchema = require('./thingNew');
-exports.thingUpdateSchema = require('./thingUpdate');
+exports.thingNewSchema = require("./thingNew.json");
+exports.thingUpdateSchema = require("./thingUpdate.json");

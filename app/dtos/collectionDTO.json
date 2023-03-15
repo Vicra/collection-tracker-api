@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "value": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "year": {
+      "type": "string"
+    },
+    "condition": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "group": {
+      "type": "string"
+    }
+  },
+  "required": ["name", "value", "group"]
+}

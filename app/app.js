@@ -5,7 +5,7 @@ const express = require("express");
 // app imports
 const { connectToDatabase, globalResponseHeaders } = require("./config");
 const { errorHandler } = require("./handlers");
-const { thingsRouter } = require("./routers");
+const { collectionRouter, thingsRouter } = require("./routers");
 
 // global constants
 dotenv.config();
@@ -28,6 +28,7 @@ app.use(bodyParserHandler); // error handling specific to body parser only
 // response headers setup; CORS
 app.use(globalResponseHeaders);
 
+app.use("/collections", collectionRouter);
 app.use("/things", thingsRouter);
 
 // catch-all for 404 "Not Found" errors
