@@ -41,5 +41,5 @@ module.exports = {
   bodyParserHandler,
   fourOhFourHandler,
   fourOhFiveHandler,
-  globalErrorHandler
+  globalErrorHandler,
 };

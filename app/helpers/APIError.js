@@ -22,8 +22,8 @@ class APIError extends Error {
       error: {
         status,
         title,
-        message
-      }
+        message,
+      },
     };
   }
 }
