@@ -1,6 +1,13 @@
 // npm packages
 const dotenv = require("dotenv");
 const express = require("express");
+const swaggerUi = require("swagger-ui-express");
+
+const fs = require("fs");
+const YAML = require("yaml");
+
+const file = fs.readFileSync("./swagger.yaml", "utf8");
+const swaggerDocument = YAML.parse(file);
 
 // app imports
 const { connectToDatabase, globalResponseHeaders } = require("./config");
@@ -19,6 +26,8 @@ const {
 
 // database
 connectToDatabase();
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // body parser setup
 app.use(express.urlencoded({ extended: true }));

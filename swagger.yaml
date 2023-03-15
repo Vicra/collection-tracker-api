@@ -1,0 +1,189 @@
+openapi: 3.0.3
+info:
+  title: Collection Items Tracker API 1.0
+  description: |-
+    Small API for performing CRUD operations on Collective Items and grouping them
+  contact:
+    email: honvramirez@gmail.com
+  version: 1.0.0
+servers:
+  - url: https://petstore3.swagger.io/api/v3
+tags:
+  - name: Collective
+    description: Everything about your Collection Items (Collectives)
+  - name: Groups
+    description: Access the collection items groups
+paths:
+  /collectives:
+    post:
+      tags:
+        - collective
+      summary: Add a new collective item
+      description: Add a new collective item
+      operationId: addCollective
+      requestBody:
+        description: Create a new collective item
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Collective"
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Collective"
+        "400":
+          description: Bad Request
+    get:
+      tags:
+        - collective
+      summary: List of all collective items
+      description: Return a list of all collective items
+      operationId: getCollectivesAll
+      parameters:
+        - name: limit
+          in: query
+          description: amount to limit records
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayOfCollective"
+        "400":
+          description: Bad Request
+  /collectives/{name}:
+    get:
+      tags:
+        - collective
+      summary: Find collective item by name
+      description: Returns a single collective item
+      operationId: getCollectiveItemByName
+      parameters:
+        - name: name
+          in: path
+          description: name of the collective item to return
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Collective"
+            application/xml:
+              schema:
+                $ref: "#/components/schemas/Collective"
+        "400":
+          description: Invalid name supplied
+        "404":
+          description: Collective item not found
+    patch:
+      tags:
+        - collective
+      summary: Update an existing collective
+      description: Update an existing collective item by name
+      operationId: updateCollective
+      parameters:
+        - name: name
+          in: path
+          description: name of the collective item to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update an existent collective
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Collective"
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Collective"
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+    delete:
+      tags:
+        - collective
+      summary: Deletes a collective item
+      description: delete a collective item
+      operationId: deleteCollectiveItem
+      parameters:
+        - name: name
+          in: path
+          description: Collective name to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        "400":
+          description: Invalid collective item value
+components:
+  schemas:
+    Collective:
+      required:
+        - name
+        - group
+        - value
+      type: object
+      properties:
+        name:
+          type: string
+          example: Watch
+        value:
+          type: integer
+          example: 2000
+        year:
+          type: string
+          example: 3000 B.C.
+        condition:
+          type: string
+          description: items condition
+          enum:
+            - new
+            - like-new
+            - acceptable
+            - good
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: "##default"
+    ArrayOfCollective:
+      items:
+        $ref: "#/components/schemas/Collective"
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
