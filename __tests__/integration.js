@@ -15,6 +15,11 @@ const collectiveMock = {
   group: "relic",
 };
 
+const groupMock = {
+  _id: "relic",
+  count: 1,
+};
+
 beforeEach(async () => {
   const collectiveObj = new Collective(collectiveMock);
   const a = await collectiveObj.save();
@@ -32,6 +37,13 @@ describe("GET /collectives", () => {
   test("Get a list of collectives", async () => {
     let response = await request(app).get("/collectives");
     expect(response.body).toEqual([collectiveMock]);
+  });
+});
+
+describe("GET /collectives/groups", () => {
+  test("Get a list of groups", async () => {
+    let response = await request(app).get("/collectives/groups");
+    expect(response.body).toEqual([groupMock]);
   });
 });
 
