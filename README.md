@@ -2,6 +2,8 @@
 
 https://github.com/hueter/docker-node-express-boilerplate
 
+Node version used: 16.18.1
+
 ## How to Install & Run
 
 1.  Run `docker-compose up` to start three containers:
@@ -10,14 +12,18 @@ https://github.com/hueter/docker-node-express-boilerplate
     - NGINX proxy container
 1.  Server is accessible at `http://localhost:8080`
 
+## Production environment
+
+GET https://collectiontrackerapi.lat/collectives
+
+## Swagger documentation
+
+https://collectiontrackerapi.lat/api-docs/
+
 ## How to Run Tests
 
 Use LTS version of Node
 `npm install` followed by `npm test` to run everything
-
-## Swagger documentation
-
-http://localhost/api-docs/
 
 ## About the project
 
