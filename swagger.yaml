@@ -7,7 +7,7 @@ info:
     email: honvramirez@gmail.com
   version: 1.0.0
 servers:
-  - url: https://petstore3.swagger.io/api/v3
+  - url: https://collectiontrackerapi.lat/
 tags:
   - name: Collective
     description: Everything about your Collection Items (Collectives)
@@ -133,8 +133,37 @@ paths:
       responses:
         "400":
           description: Invalid collective item value
+  /collectives/groups:
+    get:
+      tags:
+        - collective
+      summary: List of all collective groups
+      description: Return a list of all collective groups
+      operationId: getCollectivesGroups
+      parameters:
+        - name: limit
+          in: query
+          description: amount to limit records
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArrayOfGroup"
+        "400":
+          description: Bad Request
 components:
   schemas:
+    Group:
+      type: object
+      properties:
+        _id:
+          type: string
+        count:
+          type: integer
     Collective:
       required:
         - name
@@ -159,31 +188,9 @@ components:
             - like-new
             - acceptable
             - good
-    ApiResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        type:
-          type: string
-        message:
-          type: string
-      xml:
-        name: "##default"
     ArrayOfCollective:
       items:
         $ref: "#/components/schemas/Collective"
-  securitySchemes:
-    petstore_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
-          scopes:
-            write:pets: modify pets in your account
-            read:pets: read your pets
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
+    ArrayOfGroup:
+      items:
+        $ref: "#/components/schemas/Group"
